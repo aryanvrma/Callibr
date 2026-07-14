@@ -74,3 +74,42 @@ export async function sendEscalationEmail({
     return { success: false, error: err instanceof Error ? err.message : String(err) }
   }
 }
+
+export async function sendMonitoringAlert({
+  subject,
+  issues
+}: {
+  subject: string
+  issues: string[]
+}) {
+  const alertEmail = process.env.ALERT_EMAIL
+  if (!alertEmail) {
+    console.error('ALERT_EMAIL not set, skipping monitoring alert')
+    return { success: false, error: 'ALERT_EMAIL not configured' }
+  }
+
+  try {
+    const result = await resend.emails.send({
+      from: 'Callibr Monitoring <onboarding@resend.dev>',
+      to: alertEmail,
+      subject: `[Callibr Alert] ${subject}`,
+      html: `
+        <h2>Callibr System Alert</h2>
+        <ul>
+          ${issues.map((i) => `<li>${i}</li>`).join('')}
+        </ul>
+        <p>Checked at: ${new Date().toISOString()}</p>
+      `
+    })
+
+    if (result.error) {
+      console.error('sendMonitoringAlert failed:', result.error)
+      return { success: false, error: result.error.message }
+    }
+
+    return { success: true, id: result.data?.id }
+  } catch (err) {
+    console.error('sendMonitoringAlert threw:', err)
+    return { success: false, error: err instanceof Error ? err.message : String(err) }
+  }
+}

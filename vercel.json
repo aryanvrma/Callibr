@@ -3,6 +3,10 @@
     {
       "path": "/api/cron/poll-tabbly",
       "schedule": "*/5 * * * *"
+    },
+    {
+      "path": "/api/cron/monitor",
+      "schedule": "*/30 * * * *"
     }
   ]
 }
