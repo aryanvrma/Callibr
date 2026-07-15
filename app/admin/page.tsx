@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { CallButton } from './_components/call-button'
+import { BulkCallButton } from './_components/bulk-call-button'
 import Link from 'next/link'
 
 export default async function AdminHomePage() {
@@ -12,10 +13,12 @@ export default async function AdminHomePage() {
     .limit(50)
 
   const CALLABLE_STATUSES = ['pending', 'needs_retry']
+  const pendingCount = cases?.filter((c) => CALLABLE_STATUSES.includes(c.status)).length ?? 0
 
   return (
     <div>
       <h1 className="text-xl font-semibold mb-4">All verification cases</h1>
+      <BulkCallButton pendingCount={pendingCount} />
       <table className="w-full text-sm">
         <thead>
           <tr className="text-left border-b">
