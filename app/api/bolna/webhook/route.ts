@@ -1,4 +1,3 @@
-cat > ~/Callibr/app/api/bolna/webhook/route.ts << 'ENDOFFILE'
 import { createClient } from '@/lib/supabase/server'
 import { extractVerificationData } from '@/lib/openai/extract'
 import { TERMINAL_STATUSES } from '@/lib/bolna/client'
@@ -125,5 +124,4 @@ export async function POST(req: Request) {
 
   return NextResponse.json({ received: true, outcome: extracted.outcome, newStatus })
 }
-ENDOFFILE
 
