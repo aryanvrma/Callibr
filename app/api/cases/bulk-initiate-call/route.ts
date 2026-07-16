@@ -2,7 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { initiateCallForCase } from '@/lib/cases/initiate-call'
 import { NextResponse } from 'next/server'
 
-const CALLABLE_STATUSES = ['pending', 'needs_retry']
+const CALLABLE_STATUSES = ['pending', 'needs_retry'] as const
 
 export async function POST() {
   const supabase = await createClient()

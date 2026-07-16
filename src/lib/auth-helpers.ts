@@ -10,12 +10,12 @@ export async function requireUser() {
   }
 
   const { data: profile } = await supabase
-    .from('profiles')
-    .select('role, full_name, client_id')
-    .eq('id', user.id)
-    .single()
+  .from('profiles')
+  .select('role, full_name, client_id')
+  .eq('id', user.id)
+  .single()
 
-  return { user, profile }
+return { user, profile: profile as { role: string; full_name: string; client_id: string } | null }
 }
 
 export async function requireAdmin() {

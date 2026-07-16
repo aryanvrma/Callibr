@@ -45,7 +45,7 @@ export async function GET(req: Request) {
         call_provider: 'tabbly',
         call_sid: completedCall.id,
         transcript: completedCall.call_transcript,
-        extracted_data: extracted,
+        extracted_data: extracted as any,
         outcome: extracted.outcome
       })
 

@@ -1,7 +1,8 @@
 import { Resend } from 'resend'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
-
+function getResendClient() {
+  return new Resend(process.env.RESEND_API_KEY)
+}
 export async function sendReportReadyEmail({
   to,
   candidateName,
@@ -14,7 +15,7 @@ export async function sendReportReadyEmail({
   const reportUrl = `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/cases/${caseId}/report`
 
   try {
-    const result = await resend.emails.send({
+    const result = await getResendClient().emails.send({
       from: 'Callibr <onboarding@resend.dev>',
       to,
       subject: `Verification Complete: ${candidateName}`,
@@ -51,7 +52,7 @@ export async function sendEscalationEmail({
   const caseUrl = `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/cases/${caseId}`
 
   try {
-    const result = await resend.emails.send({
+    const result = await getResendClient().emails.send({
       from: 'Callibr <onboarding@resend.dev>',
       to,
       subject: `Action Needed: Verification Escalated for ${candidateName}`,
@@ -84,12 +85,12 @@ export async function sendMonitoringAlert({
 }) {
   const alertEmail = process.env.ALERT_EMAIL
   if (!alertEmail) {
-    console.error('ALERT_EMAIL not set, skipping monitoring alert')
+    console.error('ALERT_EMAIL not set,skipping monitoring alert')
     return { success: false, error: 'ALERT_EMAIL not configured' }
   }
 
   try {
-    const result = await resend.emails.send({
+    const result = await getResendClient().emails.send({
       from: 'Callibr Monitoring <onboarding@resend.dev>',
       to: alertEmail,
       subject: `[Callibr Alert] ${subject}`,

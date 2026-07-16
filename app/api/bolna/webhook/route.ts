@@ -80,7 +80,7 @@ export async function POST(req: Request) {
     call_provider: 'bolna',
     call_sid: event.id,
     transcript: event.transcript,
-    extracted_data: extracted,
+    extracted_data: extracted as any,
     outcome: extracted.outcome
   })
 
